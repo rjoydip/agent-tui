@@ -8,24 +8,26 @@
   "main": "main.ts",
   "module": "main.ts",
   "scripts": {
+    "postinstall": "[ -d .opencode ] && cd .opencode && bun install || true",
     "prepare": "simple-git-hooks",
     "lint": "oxlint .",
     "lint:fix": "oxlint --fix .",
-    "format": "oxfmt .",
+    "format": "oxfmt",
     "actions:up": "actions-up",
     "typecheck": "tsgo --noEmit",
     "dev": "bun --watch main.ts",
     "start": "bun main.ts"
   },
   "dependencies": {
-    "@opentui/core": "^0.1.83"
+    "@opentui/core": "^0.1.90"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@typescript/native-preview": "^7.0.0-dev.20260226.1",
+    "@types/node": "^25.5.0",
+    "@typescript/native-preview": "^7.0.0-dev.20260320.1",
     "actions-up": "^1.12.0",
     "oxfmt": "^0.35.0",
-    "oxlint": "^1.50.0",
+    "oxlint": "^1.56.0",
     "simple-git-hooks": "^2.13.1"
   },
   "peerDependencies": {

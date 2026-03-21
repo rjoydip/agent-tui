@@ -1,0 +1,38 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "@franlol/opencode-md-table-formatter@latest",
+    "opencode-helicone-session",
+    "opencode-pty",
+    "opencode-vibeguard",
+    "opencode-wakatime"
+  ],
+  "permission": {
+    "skill": {
+      "*": "allow",
+      "pr-review": "allow",
+      "internal-*": "deny",
+      "experimental-*": "ask"
+    }
+  },
+  "mcp": {},
+  "lsp": {},
+  "agent": {
+    "creative": {
+      "color": "#ff6b6b"
+    },
+    "code-reviewer": {
+      "color": "accent"
+    },
+    "orchestrator": {
+      "mode": "primary",
+      "permission": {
+        "task": {
+          "*": "deny",
+          "orchestrator-*": "deny",
+          "code-reviewer": "ask"
+        }
+      }
+    }
+  }
+}

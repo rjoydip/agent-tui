@@ -47,7 +47,7 @@ export class Container implements IContainer {
     const queryPrefix = new BoxRenderable(this.renderer, {
       id: "query-prefix",
       backgroundColor: _theme.seeds.primary,
-    })
+    });
 
     const queryInput = new InputRenderable(this.renderer, {
       id: "query-input",
@@ -60,11 +60,6 @@ export class Container implements IContainer {
         if (key.name === "escape") {
           queryInput.blur();
         }
-
-        console.log("Key pressed:", key.name);
-      },
-      onPaste: (event) => {
-        console.log("Pasted:", event.text);
       },
     });
 
