@@ -1,0 +1,29 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "@franlol/opencode-md-table-formatter@latest",
+    "opencode-helicone-session",
+    "opencode-pty",
+    "opencode-vibeguard",
+    "opencode-wakatime"
+  ],
+  "permission": {
+    "skill": {
+      "*": "allow",
+      "pr-review": "allow",
+      "internal-*": "deny",
+      "experimental-*": "ask"
+    }
+  },
+  "mcp": {
+    "browser-mcp": {
+      "type": "local",
+      "command": ["bunx", "-y", "@browsermcp/mcp@latest"]
+    },
+    "sqlite-mcp": {
+      "type": "local",
+      "command": ["bunx", "-y", "sqlite-mcp-server"]
+    }
+  },
+  "lsp": {}
+}
