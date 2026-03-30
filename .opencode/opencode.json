@@ -15,24 +15,15 @@
       "experimental-*": "ask"
     }
   },
-  "mcp": {},
-  "lsp": {},
-  "agent": {
-    "creative": {
-      "color": "#ff6b6b"
+  "mcp": {
+    "browser-mcp": {
+      "type": "local",
+      "command": ["bunx", "-y", "@browsermcp/mcp@latest"]
     },
-    "code-reviewer": {
-      "color": "accent"
-    },
-    "orchestrator": {
-      "mode": "primary",
-      "permission": {
-        "task": {
-          "*": "deny",
-          "orchestrator-*": "deny",
-          "code-reviewer": "ask"
-        }
-      }
+    "sqlite-mcp": {
+      "type": "local",
+      "command": ["bunx", "-y", "sqlite-mcp-server"]
     }
-  }
+  },
+  "lsp": {}
 }

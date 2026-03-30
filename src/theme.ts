@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { ThemeError } from "./errors";
 
 const ALLOWED_THEMES = ["default", "nord", "dracula", "nightowl"] as const;
 
@@ -111,7 +112,11 @@ export class AgentTheme implements IAgentTheme {
       const parsed = JSON.parse(themeFile);
       return this.validateTheme(parsed);
     } catch (error) {
-      console.error(`Failed to parse theme '${themeName}':`, error);
+      const themeError: ThemeError = new ThemeError(
+        `Failed to load theme '${themeName}'`,
+        error instanceof Error ? error : undefined,
+      );
+      console.error(themeError.message);
       return DEFAULT_THEME;
     }
   }

@@ -1,4 +1,8 @@
 import { createCliRenderer } from "@opentui/core";
+import { RendererError } from "./errors";
+
+const MAX_RETRIES = 3;
+const RETRY_DELAY_MS = 500;
 
 export type CliRenderer = Awaited<ReturnType<typeof createCliRenderer>>;
 export type CliRendererOptions = Parameters<typeof createCliRenderer>[0];
@@ -43,13 +47,37 @@ export class Renderer implements IRenderer {
 
   /**
    * Lazily creates and returns a single instance of the CLI renderer.
+   * Includes retry logic for failed initializations.
    * @returns A promise that resolves to the CliRenderer instance.
    */
   async get(): Promise<CliRenderer> {
-    if (!this.instance) {
-      this.instance = await createCliRenderer(this.options);
+    if (this.instance) {
+      return this.instance;
     }
-    return this.instance;
+
+    let lastError: Error | undefined;
+
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+      try {
+        this.instance = await createCliRenderer(this.options);
+        return this.instance;
+      } catch (error) {
+        lastError = error instanceof Error ? error : new RendererError(String(error));
+        console.error(
+          `Renderer initialization attempt ${attempt}/${MAX_RETRIES} failed:`,
+          lastError.message,
+        );
+
+        if (attempt < MAX_RETRIES) {
+          await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS * attempt));
+        }
+      }
+    }
+
+    throw new RendererError(
+      `Failed to initialize renderer after ${MAX_RETRIES} attempts`,
+      lastError,
+    );
   }
 
   /**

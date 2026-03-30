@@ -2,22 +2,37 @@ import { AgentConfig } from "./src/config";
 import { Container } from "./src/container";
 import { Renderer } from "./src/renderer";
 import { AgentTheme } from "./src/theme";
+import { getCliArgs, showHelp } from "./src/cli";
+import { loadConfig, saveConfig } from "./src/persistent-config";
+import { version } from "./package.json" with { type: "json" };
 
-/**
- * The main entry point for the TUI application.
- *
- * This function orchestrates the setup of the application's core components:
- * 1. It initializes the `AgentConfig` to load configuration.
- * 2. It sets up the `Renderer` which manages the lifecycle of the terminal UI.
- * 3. It creates the main `Container` component, injecting the renderer and config.
- * 4. It calls the `render` method to display the UI.
- */
 async function main() {
-  const config = new AgentConfig();
-  const theme = new AgentTheme({
-    themeName: "default",
-    mode: "light",
-  });
+  const cliArgs = getCliArgs();
+
+  if (cliArgs.help) {
+    showHelp();
+    process.exit(0);
+  }
+
+  if (cliArgs.version) {
+    console.log(`agent-tui v${version}`);
+    process.exit(0);
+  }
+
+  const savedConfig = loadConfig();
+
+  const mergedTheme = {
+    ...savedConfig.theme,
+    ...cliArgs.theme,
+  };
+
+  const mergedConfig = {
+    ...savedConfig.config,
+    ...cliArgs.config,
+  };
+
+  const config = new AgentConfig(mergedConfig);
+  const theme = new AgentTheme(mergedTheme);
   const rendererManager = new Renderer();
   const renderer = await rendererManager.get();
 
@@ -28,6 +43,13 @@ async function main() {
   });
 
   container.render();
+
+  process.on("exit", () => {
+    saveConfig({
+      config: mergedConfig,
+      theme: mergedTheme,
+    });
+  });
 }
 
 main().catch(console.error);
