@@ -5,15 +5,15 @@
     "": {
       "name": "try-opentui",
       "dependencies": {
-        "@opentui/core": "^0.1.90",
+        "@opentui/core": "^0.1.92",
       },
       "devDependencies": {
         "@types/bun": "latest",
         "@types/node": "^25.5.0",
-        "@typescript/native-preview": "^7.0.0-dev.20260320.1",
+        "@typescript/native-preview": "^7.0.0-dev.20260329.1",
         "actions-up": "^1.12.0",
         "oxfmt": "^0.35.0",
-        "oxlint": "^1.56.0",
+        "oxlint": "^1.57.0",
         "simple-git-hooks": "^2.13.1",
       },
       "peerDependencies": {
