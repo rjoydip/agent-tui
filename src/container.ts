@@ -259,16 +259,14 @@ Tab - Toggle Plan/Build mode`;
       },
     });
 
+    this.statusBar.render();
+
     this.queryInput.focus();
     inputContainer.add(inputPrefix);
     inputContainer.add(this.queryInput);
 
-    this.statusBar.render();
-
     this.container.add(this.messageList);
     this.container.add(inputContainer);
-    this.container.add(this.statusBar);
-
     this.renderer.root.add(this.container);
   }
 

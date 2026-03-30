@@ -16,6 +16,7 @@ export class StatusBar {
   private readonly theme: IAgentTheme;
   private container: BoxRenderable | null = null;
   private leftBox: BoxRenderable | null = null;
+  private centerBox: BoxRenderable | null = null;
   private rightBox: BoxRenderable | null = null;
 
   constructor(options: StatusBarOpts) {
@@ -31,19 +32,25 @@ export class StatusBar {
       id: "status-bar",
       flexDirection: "row",
       width: "100%",
-      height: 1,
+      height: 2,
     });
 
     this.leftBox = new BoxRenderable(this.renderer, {
       id: "status-left",
       flexDirection: "row",
-      gap: 1,
+      gap: 2,
+    });
+
+    this.centerBox = new BoxRenderable(this.renderer, {
+      id: "status-center",
+      flexDirection: "row",
+      gap: 2,
     });
 
     this.rightBox = new BoxRenderable(this.renderer, {
       id: "status-right",
       flexDirection: "row",
-      gap: 1,
+      gap: 2,
     });
 
     const versionText = new TextRenderable(this.renderer, {
@@ -60,7 +67,7 @@ export class StatusBar {
 
     const connectionText = new TextRenderable(this.renderer, {
       id: "status-connection",
-      content: `${figures.circle}Offline`,
+      content: `${figures.circle} Offline`,
       fg: _theme.seeds.warning,
     });
 
@@ -84,7 +91,7 @@ export class StatusBar {
 
     const helpText = new TextRenderable(this.renderer, {
       id: "status-help",
-      content: "Tab:Mode Ctrl+P:Cmd",
+      content: "ctrl+p commands",
       fg: _theme.seeds.neutral,
     });
 
@@ -92,12 +99,14 @@ export class StatusBar {
     this.leftBox.add(dirText);
     this.leftBox.add(connectionText);
 
-    this.rightBox.add(modeText);
+    this.centerBox.add(modeText);
+
     this.rightBox.add(themeText);
     this.rightBox.add(modelText);
     this.rightBox.add(helpText);
 
     this.container.add(this.leftBox);
+    this.container.add(this.centerBox);
     this.container.add(this.rightBox);
     this.renderer.root.add(this.container);
   }
